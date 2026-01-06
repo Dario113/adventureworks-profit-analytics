@@ -2,86 +2,102 @@
 
 ## 1. Executive Summary
 
-The Data Science Project was undertaken using the AdventureWorks sample database provided by Microsoft. The purpose of the analysis was to examine a complete data workflow in order to identify which factors influence a company’s profit levels and to forecast future profit trends.
+Using the AdventureWorks database, this project follows an end-to-end data analysis workflow to understand the main factors influencing a company’s profit and to forecast future profit.
 
-The project integrates several elements commonly seen in real business intelligence and data science projects. These include data manipulation, data storage, data modelling, analytical forecasting, and interactive reporting.
+The project mirrors a realistic business intelligence and data science scenario by combining data transformation, data storage, analytical modelling, and reporting in one pipeline.
 
-The AdventureWorks database was downloaded and deployed to a SQL Server instance. The database follows a star schema design, centred on the FactInternetSales table and supported by multiple dimension tables.
+AdventureWorks was deployed to a Microsoft SQL Server instance. The database uses a star-style structure centred on the **FactInternetSales** table and supported by multiple dimension tables. Profit was not provided directly in the raw data, so it was calculated using sales revenue, tax amounts, and product costs.
 
-Profit was not explicitly stored in the original dataset and was therefore derived using the relationship:
+An interactive dashboard was created in **Power BI** to explore profit over time and across geographies, product categories, and subcategories. KPI cards provide an immediate view of performance, while trend and comparison visuals support deeper analysis.
 
-Profit = SalesAmount − (TaxAmt + TotalProductCost)
-
-This calculation was implemented dynamically within Power BI using DAX.
+To extend the work beyond historical reporting, **Python** was used for time series forecasting. A **Holt–Winters Exponential Smoothing** model was applied to capture both trend and seasonality and to generate a 12-month forecast. The forecast output was then imported back into Power BI so that historical and forecasted profit values could be analysed together.
 
 ---
 
 ## 2. Data Infrastructure & Tools
 
-The AdventureWorks database was selected due to its clear and well-structured snowflake schema and its representation of realistic sales and commercial processes.
+The AdventureWorks database was selected because its schema is clear and well structured, and it represents realistic sales and commercial processes. This provides a strong foundation for demonstrating the full data science workflow.
 
-The project was deployed on a Microsoft SQL Server instance, which acted as the central data repository. The tables used for the analysis were:
+The database was deployed on a local Microsoft SQL Server instance, which acted as the central data repository. The main tables used were:
 
-- DimCustomer  
-- DimDate  
-- DimGeography  
-- DimProduct  
-- DimProductCategory  
-- DimProductSubcategory  
-- DimSalesTerritory  
-- FactInternetSales  
+- **FactInternetSales**
+- **DimCustomer**
+- **DimGeography**
+- **DimSalesTerritory**
+- **DimProduct**
+- **DimProductSubcategory**
+- **DimProductCategory**
+- **DimDate**
 
-Power BI was connected directly to SQL Server to extract and model the dataset. This reflects a typical enterprise analytics scenario where a relational database supports downstream analytical tools.
+Power BI was connected directly to SQL Server to import and model the data. This reflects a typical enterprise analytics setup where a relational database acts as the central source of truth. Power BI was also used to create DAX measures and build interactive visuals.
 
-Python was used to complement the analysis through time series forecasting techniques.
+Python complemented the workflow by enabling time series forecasting. Monthly profit was first prepared in SQL Server and then exported for modelling in Python. In this project, data preparation and business logic were handled within the database, while forecasting was performed in a dedicated analytical environment.
+
+<img width="1281" height="701" alt="Snowflake Schema" src="https://github.com/user-attachments/assets/e5c81766-58f0-45b3-b4f4-b19d53f8bb0b" />
 
 ---
 
 ## 3. Data Engineering
 
-Data engineering activities focused on preparing AdventureWorks transactional data for analytical workloads.
+AdventureWorks is built using a snowflake-style structure around the **FactInternetSales** table, with descriptive attributes provided through dimension tables such as **DimCustomer**, **DimGeography**, **DimSalesTerritory**, **DimProduct**, **DimProductSubcategory**, **DimProductCategory**, and **DimDate**. This structure supports efficient analytical queries and is suitable for reporting and time series analysis.
 
-Transactional data was aggregated into monthly profit observations using SQL Server. This involved joining FactInternetSales with DimDate, grouping records by calendar year and month, and exporting the resulting dataset to CSV.
+Data preparation was performed within SQL Server to create an analysis-ready dataset for profit reporting and forecasting. Since profit was not available as a native field, it was derived using:
 
-This aggregation reduced data complexity and ensured a consistent time granularity before forecasting was performed in Python.
+**Profit = SalesAmount − (TaxAmt + TotalProductCost)**
+
+This calculation was implemented in Power BI as a DAX measure so that profit is recalculated automatically under different filter selections, including time period, geography, and product hierarchy.
+
+For forecasting, profit needed to be represented as a monthly time series. SQL Server was used to aggregate profit by month by joining **FactInternetSales** to **DimDate** and grouping results by calendar year and month. This reduced dataset size and standardised the time granularity before statistical modelling.
+
+The aggregated monthly dataset was then exported to Python for forecasting.
 
 ---
 
 ## 4. Data Visualisation & Dashboards
 
-An interactive dashboard was created using Power BI.
+Data visualisation was implemented using Power BI to support interactive exploration of profit performance and trends. Power BI was selected due to its integration with SQL Server, support for DAX measures, and ability to combine historical and forecast data within a single model.
 
-The dashboard contains:
-- 4 slicers: Year, Month, Category, Subcategory  
-- 4 cards: Total Sales, Tax Paid, Product Cost, Profit  
-- 2 line charts:  
-  - Profit by Month  
-  - Profit Forecast 2014  
-- 1 clustered table: Profit by Country  
-- 1 detailed table: Category, Sub Category, # Sold, Profit  
+The report was designed around a small number of controls and visuals to keep the layout clear while still allowing flexible analysis. Four slicers were used to filter the report by:
 
-The forecasted results produced in Python were imported back into Power BI so that actual historical and forecasted profit results could be analysed together on the dashboard.
+- Year  
+- Month  
+- Product Category  
+- Product Subcategory  
+
+Four KPI cards summarise performance under the current filter context:
+
+- Total Sales  
+- Tax Paid  
+- Total Product Cost  
+- Profit  
+
+Trend analysis is supported through two line charts:
+- **Profit by Month** (historical trend and seasonality)
+- **Profit Forecast (2014)** (forecast generated in Python and imported into Power BI)
+
+Geographical performance is presented using a clustered table showing **profit by country**, enabling comparisons across regions. A detailed table provides a product hierarchy breakdown including **category**, **subcategory**, **number of units sold**, and **profit**.
+
+Overall, the dashboard design supports both high-level monitoring and deeper drill-down analysis across time, geography, and product structure.
+
+<img width="1415" height="799" alt="dashboard" src="https://github.com/user-attachments/assets/6897a227-d233-45a7-851e-615d298e609a" />
 
 ---
 
 ## 5. Data Analytics
 
-The analysis involved forecasting short-term profit trends using Holt–Winters Exponential Smoothing.
+The analytical objective of this project was to forecast short-term profit trends using historical profit derived from the AdventureWorks database. The forecasting task was treated as a **univariate time series problem**, using past monthly profit values to learn patterns and generate forward-looking estimates.
 
-The aggregated dataset was imported into Python and divided into:
-- Training data: all months except last 12  
-- Test data: final 12 months  
+Before modelling, profit was aggregated at a monthly level using SQL Server. This was done by joining **FactInternetSales** with **DimDate** and grouping by calendar year and month. Aggregating at monthly level reduces transaction-level noise and produces a regular time series suitable for forecasting.
 
-The model was evaluated using Mean Absolute Percentage Error (MAPE).
+The aggregated dataset was then imported into Python for modelling. Although some variable names in the script refer to “sales”, the values represent monthly profit calculated from revenue, tax, and product cost. This is noted to avoid ambiguity and ensure reproducibility.
 
-After validation, a final model was trained on the full dataset and used to generate twelve-month forward forecasts. The forecasted values were exported and visualised in Power BI.
+A **Holt–Winters Exponential Smoothing** model was used to forecast profit. This method is appropriate when the series contains both trend and seasonal structure. The model was configured with:
+- Additive trend  
+- Additive seasonality  
+- Seasonal period = 12 months  
 
----
+Model performance was evaluated using a train–test split, where the final 12 months were held out as a test set. The model was trained on earlier months and used to forecast the withheld period. Forecast accuracy was measured using **Mean Absolute Percentage Error (MAPE)**.
 
-## References
+After evaluation, a final model was trained using the full historical dataset and used to generate a 12-month forecast. The forecasted profit values were exported and imported into Power BI so that historical and predicted values could be visualised together.
 
-- Microsoft (2024) AdventureWorks sample databases  
-- Microsoft (2024) SQL Server documentation  
-- Microsoft (2024) Power BI documentation  
-- Microsoft (2024) DAX overview  
-- Hyndman, R.J. and Athanasopoulos, G. (2021) Forecasting: Principles and Practice  
+![ChatGPT Image Jan 6, 2026, 12_55_27 PM](https://github.com/user-attachments/assets/35557ebc-7983-4704-bc7b-fdce0570149d)
