@@ -180,3 +180,14 @@ This integration enables direct comparison between observed and predicted values
 
 Caption: Adventure Works Forecast Profit Python Code
 ![ChatGPT Image Jan 6, 2026, 12_55_27 PM](https://github.com/user-attachments/assets/0821deee-0216-4763-aee4-e2ae9900ffd8)
+
+## Conclusion
+
+The AdventureWorks Profit Analytics project demonstrated a practical end-to-end approach to analysing and forecasting company profit. The publicly available database was successfully deployed to SQL Server and used as the foundation for building a structured semantic model in Power BI.
+
+Interactive dashboards enabled profit to be examined across time periods, product categories, subcategories, and geographic regions. KPI cards and trend visuals provided both high-level summaries and detailed breakdowns, supporting clear interpretation of financial performance.
+
+Time series forecasting in Python, based on monthly aggregated profit, offered a realistic method for predicting short-term future trends. Integrating the forecasting output back into Power BI allowed historical and projected profit results to be reviewed together.
+
+Overall, the project illustrated how SQL Server, Power BI, and Python can be combined within a coherent analytical pipeline to transform transactional data into meaningful and forward-looking profit insights.
+
