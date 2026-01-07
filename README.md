@@ -34,9 +34,9 @@ The central data repository for the project was a local Microsoft SQL Server ins
 - **DimProductCategory**
 - **DimDate**
 
-Direct links to SQL Server (Microsoft SQL Server documentation, 2024) were used in Power BI to bring the data into the software.
+Direct links to SQL Server were used in Power BI to bring the data into the software.
 
-The scenario typically describes an enterprise analytics setup with a relational database acting as the central data repository. The use of Power BI greatly streamlined data modelling and the creation of DAX expressions (Microsoft DAX overview, 2024) which form measures. Additionally, it allowed for the easy production of interactive dashboards featuring visualisations.
+The scenario typically describes an enterprise analytics setup with a relational database acting as the central data repository. The use of Power BI greatly streamlined data modelling and the creation of DAX expressions which form measures. Additionally, it allowed for the easy production of interactive dashboards featuring visualisations.
 
 The analysis was complemented by Python, in order to extend it through time series forecasting techniques. The data for monthly profits was first processed within SQL Server before being transferred to a Python script for further processing. In this project, data processing and business logic were encapsulated within the database. Advanced analysis was completed in a separate data analysis platform.
 
@@ -138,7 +138,7 @@ Caption: Adventure Works Profit Dashboard
 
 The analytical objective of the Data Science Project was to forecast short-term profit trends using historical data derived from the AdventureWorks database .
 
-Profit forecasting was formulated as a univariate time series problem (Hyndman, R.J. and Athanasopoulos, 2024), where past monthly profit values were analysed to identify underlying trend and seasonal patterns and to generate forward-looking estimates.
+Profit forecasting was formulated as a univariate time series problem, where past monthly profit values were analysed to identify underlying trend and seasonal patterns and to generate forward-looking estimates.
 
 Prior to modelling, profit data was aggregated at a monthly level using SQL Server.
 
@@ -155,7 +155,7 @@ Although variable names within the Python environment reference sales, the value
 
 This distinction is documented to ensure clarity and reproducibility.
 
-A Holt–Winters Exponential Smoothing (Wikipedia, 2024) model was selected for forecasting.
+A Holt–Winters Exponential Smoothing model was selected for forecasting.
 
 This approach is well suited to time series data that exhibits:
 
